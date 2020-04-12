@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~9.0.3",
     "@angular/router": "~9.0.3",
     "@angular/service-worker": "~9.0.3",
+    "babel-core": "^6.26.3",
     "express": "^4.17.1",
     "path": "^0.12.7",
     "rxjs": "~6.5.4",

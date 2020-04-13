@@ -11,7 +11,7 @@ export class AppComponent {
   geoLocation: any;
   coranaData: any;
   districtData: any;
-  options:any;
+  options: any;
 
   constructor(private coronaTrackerService: CoronaTrackerService) { }
 
@@ -32,28 +32,27 @@ export class AppComponent {
         timeout: 5000,
         maximumAge: 0
       };
-      
-    
+
+
       navigator.geolocation.getCurrentPosition((position) => {
-    
+
         this.coronaTrackerService.getCurrentMapLocation(position).subscribe(
           result => {
             this.geoLocation = result;
-            if (this.isEmptyObj(this.geoLocation.results[0].locations[0].adminArea3)) {
+            if (this.isEmptyObj(this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2)) {
               this.coronaTrackerService.getCoranaData().subscribe(
                 result => {
 
                   this.coranaData = result;
-                  this.coranaData = this.coranaData.filter(t => t.state == this.geoLocation.results[0].locations[0].adminArea3);
+                  this.coranaData = this.coranaData.filter(t => t.state == "Tamil Nadu");
 
                   this.districtData = this.coranaData[0].districtData;
 
-                  this.districtData = this.districtData.filter(t => t.district.includes(this.geoLocation.results[0].locations[0].adminArea5));
-                 
-                   alert(JSON.stringify(this.geoLocation.results[0].locations[0].adminArea5));
+                  this.districtData = this.districtData.filter(t => t.district == this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2);
+
 
                 })
-            }else{
+            } else {
               alert("Problem is getting your location")
             }
 
@@ -83,9 +82,9 @@ export class AppComponent {
   }
   isEmptyObj(object) {
     for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-            return true;
-        }
+      if (object.hasOwnProperty(key)) {
+        return true;
+      }
     }
   }
 }

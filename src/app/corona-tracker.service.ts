@@ -11,28 +11,14 @@ export class CoronaTrackerService {
 
   constructor(private serviceutilService: ServiceutilServiceService) { }
 
-  getCurrentLocation() {
+  getCoranaData() {
     return this.serviceutilService.get("https://api.covid19india.org/v2/state_district_wise.json");
   }
 
-  getCurrentMapLocation(){
-    return this.serviceutilService.get("https://nominatim.openstreetmap.org/reverse?format=json&lat=12.9769291&lon=80.1986642");
-  }
-
-  getPosition(): Promise<any>
-  {
-    return new Promise((resolve, reject) => {
-
-      navigator.geolocation.getCurrentPosition(resp => {
-
-          resolve({lng: resp.coords.longitude, lat: resp.coords.latitude});
-        },
-        err => {
-          reject(err);
-        });
-    });
-
-  }
-
+  getCurrentMapLocation(position){
+        return this.serviceutilService.get("https://nominatim.openstreetmap.org/reverse?format=json&lat="+position.coords.latitude+"&lon="+position.coords.longitude);
+     
+  }  
+  
 }
 

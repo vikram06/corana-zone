@@ -39,6 +39,7 @@ export class AppComponent {
         this.coronaTrackerService.getCurrentMapLocation(position).subscribe(
           result => {
             this.geoLocation = result;
+            alert(this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2);
             if (this.isEmptyObj(this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2)) {
               this.coronaTrackerService.getCoranaData().subscribe(
                 result => {

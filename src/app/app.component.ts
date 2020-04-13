@@ -35,22 +35,26 @@ export class AppComponent {
       
     
       navigator.geolocation.getCurrentPosition((position) => {
-
+    
         this.coronaTrackerService.getCurrentMapLocation(position).subscribe(
           result => {
             this.geoLocation = result;
-            if (this.geoLocation.address.city != null) {
+            if (this.isEmptyObj(this.geoLocation.results[0].locations[0].adminArea3)) {
               this.coronaTrackerService.getCoranaData().subscribe(
                 result => {
+
                   this.coranaData = result;
-                  this.coranaData = this.coranaData.filter(t => t.state == this.geoLocation.address.state);
+                  this.coranaData = this.coranaData.filter(t => t.state == this.geoLocation.results[0].locations[0].adminArea3);
 
                   this.districtData = this.coranaData[0].districtData;
 
-                  this.districtData = this.districtData.filter(t => t.district == this.geoLocation.address.city);
-
+                  this.districtData = this.districtData.filter(t => t.district.match(this.geoLocation.results[0].locations[0].adminArea5));
+                 
+                   alert(JSON.stringify(this.geoLocation.results[0].locations[0].adminArea5));
 
                 })
+            }else{
+              alert("Problem is getting your location")
             }
 
           })
@@ -77,5 +81,11 @@ export class AppComponent {
     }
 
   }
-
+  isEmptyObj(object) {
+    for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+            return true;
+        }
+    }
+  }
 }

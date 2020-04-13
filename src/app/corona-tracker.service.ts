@@ -16,8 +16,7 @@ export class CoronaTrackerService {
   }
 
   getCurrentMapLocation(position){
-        return this.serviceutilService.get("https://nominatim.openstreetmap.org/reverse?format=json&lat="+position.coords.latitude+"&lon="+position.coords.longitude);
-     
+        return this.serviceutilService.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=l3S6JyIXvedh6pNDGtLBbgywPFHUuG8k&location='+position.coords.latitude+','+position.coords.longitude+'&outFormat=json&thumbMaps=false');
   }  
   
 }

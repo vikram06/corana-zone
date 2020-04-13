@@ -48,7 +48,7 @@ export class AppComponent {
 
                   this.districtData = this.coranaData[0].districtData;
 
-                  this.districtData = this.districtData.filter(t => t.district.match(this.geoLocation.results[0].locations[0].adminArea5));
+                  this.districtData = this.districtData.filter(t => t.district.includes(this.geoLocation.results[0].locations[0].adminArea5));
                  
                    alert(JSON.stringify(this.geoLocation.results[0].locations[0].adminArea5));
 

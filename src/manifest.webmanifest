@@ -6,6 +6,7 @@
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
+  "required_features": ["geolocation"],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

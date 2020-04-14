@@ -16,7 +16,7 @@ export class CoronaTrackerService {
   }
 
   getCurrentMapLocation(position){
-        return this.serviceutilService.get('http://dev.virtualearth.net/REST/v1/Locations/'+position.coords.latitude+','+position.coords.longitude+'?o=json&key=AnwBRCbGQq_PXgUsgLRWcxGetGDe6Yyc12uv_CkAvOhBIB-TTJXO0aWajRmimd64');
+        return this.serviceutilService.get('https://dev.virtualearth.net/REST/v1/Locations/'+position.coords.latitude+','+position.coords.longitude+'?o=json&key=AnwBRCbGQq_PXgUsgLRWcxGetGDe6Yyc12uv_CkAvOhBIB-TTJXO0aWajRmimd64');
   }  
   
 }

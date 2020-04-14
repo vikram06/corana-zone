@@ -27,19 +27,12 @@ export class AppComponent {
 
     if (navigator.geolocation) {
 
-      var options = {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      };
-
-
       navigator.geolocation.getCurrentPosition((position) => {
 
         this.coronaTrackerService.getCurrentMapLocation(position).subscribe(
           result => {
             this.geoLocation = result;
-            alert(this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2);
+
             if (this.isEmptyObj(this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2)) {
               this.coronaTrackerService.getCoranaData().subscribe(
                 result => {

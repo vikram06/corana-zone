@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CoronaTrackerService } from './corona-tracker.service';
+import { FormBuilder, Validators } from "@angular/forms";
 declare var ol: any;
 @Component({
   selector: 'app-root',
@@ -12,73 +13,48 @@ export class AppComponent {
   coranaData: any;
   districtData: any;
   options: any;
-
-  constructor(private coronaTrackerService: CoronaTrackerService) { }
-
-
+  isSubmitted = false;
+  confirmedCases:any;
+  coranaZone:string;
   map: any;
+
+  constructor(private coronaTrackerService: CoronaTrackerService, public fb: FormBuilder) { }
+
 
   ngOnInit() {
     this.callTracker();
   }
 
   private callTracker() {
-
-
-    if (navigator.geolocation) {
-
-      navigator.geolocation.getCurrentPosition((position) => {
-
-        this.coronaTrackerService.getCurrentMapLocation(position).subscribe(
-          result => {
-            this.geoLocation = result;
-
-            if (this.isEmptyObj(this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2)) {
-              this.coronaTrackerService.getCoranaData().subscribe(
-                result => {
-
-                  this.coranaData = result;
-                  this.coranaData = this.coranaData.filter(t => t.state == "Tamil Nadu");
-
-                  this.districtData = this.coranaData[0].districtData;
-
-                  this.districtData = this.districtData.filter(t => t.district == this.geoLocation.resourceSets[0].resources[0].address.adminDistrict2);
-
-
-                })
-            } else {
-              alert("Problem is getting your location")
-            }
-
-          })
-
-        this.map = new ol.Map({
-          target: 'map',
-          layers: [
-            new ol.layer.Tile({
-              source: new ol.source.OSM()
-            })
-          ],
-          view: new ol.View({
-            center: ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]),
-            zoom: 8
-          })
-        });
-      }
-
-      );
-
-    }
-    else {
-      alert("Geolocation is not supported by this browser.");
-    }
-
+    this.coronaTrackerService.getCoranaData().subscribe(
+      result => {
+        this.coranaData = result;
+      });
   }
-  isEmptyObj(object) {
-    for (var key in object) {
-      if (object.hasOwnProperty(key)) {
-        return true;
-      }
-    }
+
+/*########### Form ###########*/
+coranaForm = this.fb.group({
+  stateName: ['', [Validators.required]],
+  districtName: ['', [Validators.required]]
+})
+
+
+// Choose city using select dropdown
+changeCity(e) {
+  this.districtData = this.coranaData[e].districtData;
+}
+
+changeDistrict(e) {
+  this.confirmedCases = this.districtData[e].confirmed;
+  if(this.confirmedCases <= '5'){
+   this.coranaZone = 'green';
+  }else if(this.confirmedCases <= '25'){
+    this.coranaZone = 'yellow';
+  }else{
+    this.coranaZone = 'red';
   }
+  
+}
+
+
 }
